@@ -1309,4 +1309,589 @@ input:checked + .slider:before {
     .settings-tabs {
         flex-wrap: wrap;
     }
+    /* إضافة هذه التنسيقات إلى ملف style.css السابق */
+
+/* شريط حالة التلغرام في الهيدر */
+.telegram-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    background: var(--gray-100);
+    border-radius: 20px;
+    font-size: 14px;
 }
+
+.dark .telegram-status {
+    background: var(--gray-700);
+}
+
+.telegram-status.connected {
+    background: rgba(0, 136, 204, 0.1);
+    color: #0088cc;
+}
+
+.dark .telegram-status.connected {
+    background: rgba(0, 136, 204, 0.2);
+}
+
+.telegram-status.disconnected {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.dark .telegram-status.disconnected {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.telegram-status i {
+    font-size: 16px;
+}
+
+/* إشعار التلغرام */
+.telegram-notice {
+    background: linear-gradient(135deg, #0088cc, #00aced);
+    color: white;
+    border-radius: var(--radius);
+    padding: var(--spacing);
+    margin-bottom: var(--spacing);
+    animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.notice-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+    flex-wrap: wrap;
+}
+
+.notice-content i {
+    font-size: 2rem;
+}
+
+.notice-content h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.notice-content p {
+    margin: 4px 0 0 0;
+    opacity: 0.9;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* دليل استخدام التلغرام */
+.telegram-guide {
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    padding: var(--spacing);
+    margin-bottom: var(--spacing);
+    border: 2px solid #0088cc;
+}
+
+.dark .telegram-guide {
+    background: var(--gray-800);
+    border-color: #00aced;
+}
+
+.telegram-guide h3 {
+    color: #0088cc;
+    margin-bottom: var(--spacing);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dark .telegram-guide h3 {
+    color: #00aced;
+}
+
+.guide-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing);
+}
+
+.step {
+    display: flex;
+    gap: var(--spacing);
+    align-items: flex-start;
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    background: #0088cc;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    margin: 0 0 4px 0;
+    color: var(--gray-800);
+}
+
+.dark .step-content h4 {
+    color: var(--gray-100);
+}
+
+.step-content p {
+    margin: 0;
+    color: var(--gray-600);
+    font-size: 14px;
+}
+
+.dark .step-content p {
+    color: var(--gray-400);
+}
+
+.step-content a {
+    color: #0088cc;
+    text-decoration: none;
+}
+
+.step-content a:hover {
+    text-decoration: underline;
+}
+
+/* نافذة تلغرام */
+.telegram-config {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.config-step {
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    padding: var(--spacing);
+    border-right: 4px solid #0088cc;
+}
+
+.dark .config-step {
+    background: var(--gray-800);
+}
+
+.config-step h4 {
+    color: #0088cc;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.telegram-link {
+    color: #0088cc;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.telegram-link:hover {
+    text-decoration: underline;
+}
+
+.steps-list {
+    margin: var(--spacing) 0;
+    padding-right: var(--spacing);
+}
+
+.steps-list li {
+    margin-bottom: 8px;
+    color: var(--gray-700);
+}
+
+.dark .steps-list li {
+    color: var(--gray-300);
+}
+
+.test-message-box {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: 8px;
+}
+
+.test-message-box input {
+    flex: 1;
+}
+
+/* قائمة الأوامر */
+.telegram-commands {
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    padding: var(--spacing);
+}
+
+.dark .telegram-commands {
+    background: var(--gray-800);
+}
+
+.telegram-commands h4 {
+    color: var(--gray-800);
+    margin-bottom: var(--spacing);
+}
+
+.dark .telegram-commands h4 {
+    color: var(--gray-100);
+}
+
+.commands-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+}
+
+.command {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 8px 12px;
+    background: white;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-200);
+}
+
+.dark .command {
+    background: var(--gray-700);
+    border-color: var(--gray-600);
+}
+
+.command code {
+    background: var(--gray-100);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--gray-800);
+}
+
+.dark .command code {
+    background: var(--gray-600);
+    color: var(--gray-100);
+}
+
+.command span {
+    font-size: 12px;
+    color: var(--gray-600);
+    flex: 1;
+}
+
+.dark .command span {
+    color: var(--gray-400);
+}
+
+/* أمثلة الرسائل */
+.message-examples {
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    padding: var(--spacing);
+}
+
+.dark .message-examples {
+    background: var(--gray-800);
+}
+
+.message-examples h4 {
+    color: var(--gray-800);
+    margin-bottom: var(--spacing);
+}
+
+.dark .message-examples h4 {
+    color: var(--gray-100);
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+}
+
+.example {
+    padding: 12px;
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    transition: transform 0.2s ease;
+}
+
+.dark .example {
+    background: var(--gray-700);
+    border-color: var(--gray-600);
+}
+
+.example:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.example code {
+    display: block;
+    background: var(--gray-100);
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    margin-bottom: 8px;
+    text-align: center;
+    color: var(--gray-800);
+    font-size: 14px;
+}
+
+.dark .example code {
+    background: var(--gray-600);
+    color: var(--gray-100);
+}
+
+.example span {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray-600);
+}
+
+.dark .example span {
+    color: var(--gray-400);
+}
+
+/* أزرار إعدادات التلغرام */
+.config-actions {
+    display: flex;
+    gap: var(--spacing);
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.btn-telegram {
+    background: #0088cc;
+    color: white;
+}
+
+.btn-telegram:hover {
+    background: #0077b3;
+}
+
+/* إعدادات الويب هوك */
+.telegram-webhook {
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    padding: var(--spacing);
+    margin-top: var(--spacing);
+}
+
+.dark .telegram-webhook {
+    background: var(--gray-800);
+}
+
+.telegram-webhook h4 {
+    color: var(--gray-800);
+    margin-bottom: var(--spacing);
+}
+
+.dark .telegram-webhook h4 {
+    color: var(--gray-100);
+}
+
+.webhook-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing);
+    margin-top: var(--spacing);
+}
+
+.webhook-option {
+    padding: var(--spacing);
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+}
+
+.dark .webhook-option {
+    background: var(--gray-700);
+    border-color: var(--gray-600);
+}
+
+.webhook-option h5 {
+    margin: 0 0 8px 0;
+    color: var(--gray-800);
+}
+
+.dark .webhook-option h5 {
+    color: var(--gray-100);
+}
+
+.webhook-option p {
+    margin: 0 0 var(--spacing) 0;
+    color: var(--gray-600);
+    font-size: 14px;
+}
+
+.dark .webhook-option p {
+    color: var(--gray-400);
+}
+
+/* حالة الاتصال */
+.telegram-status-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing);
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing);
+}
+
+.dark .telegram-status-settings {
+    background: var(--gray-800);
+}
+
+.status-info h4 {
+    margin: 0 0 8px 0;
+    color: var(--gray-800);
+}
+
+.dark .status-info h4 {
+    color: var(--gray-100);
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.connection-status.connected {
+    color: var(--secondary);
+}
+
+.connection-status.disconnected {
+    color: var(--danger);
+}
+
+.connection-status i {
+    font-size: 12px;
+}
+
+/* تعديلات للاستجابة */
+@media (max-width: 768px) {
+    .notice-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .guide-steps {
+        grid-template-columns: 1fr;
+    }
+    
+    .commands-list,
+    .examples-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .config-actions {
+        flex-direction: column;
+    }
+    
+    .config-actions .btn {
+        width: 100%;
+    }
+    
+    .telegram-status-settings {
+        flex-direction: column;
+        gap: var(--spacing);
+        text-align: center;
+    }
+}
+
+/* مؤشر المصروفات من تلغرام */
+.expense-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.expense-source.telegram {
+    background: rgba(0, 136, 204, 0.1);
+    color: #0088cc;
+}
+
+.expense-source.manual {
+    background: rgba(156, 163, 175, 0.1);
+    color: var(--gray-600);
+}
+
+.dark .expense-source.manual {
+    background: rgba(156, 163, 175, 0.2);
+    color: var(--gray-400);
+}
+
+/* أزرار الفوتر */
+.footer-links {
+    display: flex;
+    gap: var(--spacing);
+    justify-content: center;
+    margin-top: var(--spacing);
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--gray-500);
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+/* تحسينات للنماذج */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+    color: var(--gray-800);
+}
+
+.dark .form-control {
+    background: var(--gray-700);
+    border-color: var(--gray-600);
+    color: var(--gray-100);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* تحسينات للجدول */
+.expenses-table td:nth-child(2) {
+    min-width: 100px;
+}
+
