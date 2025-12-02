@@ -1,0 +1,19 @@
+{
+  "name": "نظام المصروفات الذكي",
+  "short_name": "المصروفات",
+  "description": "تطبيق ويب لتتبع المصروفات الشخصية",
+  "start_url": "/masrofy/",
+  "display": "standalone",
+  "background_color": "#4f46e5",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
