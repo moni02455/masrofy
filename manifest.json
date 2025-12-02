@@ -1,19 +1,12 @@
 {
-  "name": "نظام المصروفات الذكي",
+  "name": "نظام المصروفات الذكي مع تلغرام",
   "short_name": "المصروفات",
-  "description": "تطبيق ويب لتتبع المصروفات الشخصية",
-  "start_url": "/masrofy/",
+  "description": "تطبيق ويب لتتبع المصروفات الشخصية مع ربط تلغرام",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#4f46e5",
   "theme_color": "#4f46e5",
   "orientation": "portrait-primary",
   "dir": "rtl",
-  "lang": "ar",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    }
-  ]
+  "lang": "ar"
 }
