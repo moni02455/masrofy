@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام المصروفات الذكي 💰</title>
-    <meta name="description" content="تطبيق ويب لتتبع المصروفات الشخصية">
+    <meta name="description" content="تطبيق ويب لتتبع المصروفات الشخصية مع ربط تلغرام">
     <meta name="theme-color" content="#4f46e5">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-    <!-- Font Awesome للأيقونات -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- خط عربي -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -34,11 +34,15 @@
                 <i class="fas fa-wallet"></i>
             </div>
             <h1>نظام المصروفات الذكي</h1>
-            <p>تتبع مصروفاتك بسهولة وأمان</p>
+            <p>تتبع مصروفاتك عبر تلغرام وبسهولة</p>
             <button id="start-btn" class="btn btn-primary btn-large">
                 <i class="fas fa-play"></i> ابدأ الآن
             </button>
             <div class="features">
+                <div class="feature">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>ربط تلغرام</span>
+                </div>
                 <div class="feature">
                     <i class="fas fa-chart-line"></i>
                     <span>تقارير مفصلة</span>
@@ -46,10 +50,6 @@
                 <div class="feature">
                     <i class="fas fa-bell"></i>
                     <span>تنبيهات ميزانية</span>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-download"></i>
-                    <span>تصدير البيانات</span>
                 </div>
             </div>
         </div>
@@ -62,11 +62,18 @@
             <div class="header-top">
                 <div class="logo">
                     <i class="fas fa-wallet"></i>
-                    <h1>المصروفات</h1>
+                    <h1>المصروفات الذكي</h1>
+                    <div class="telegram-status" id="telegram-status">
+                        <i class="fab fa-telegram"></i>
+                        <span>غير متصل</span>
+                    </div>
                 </div>
                 <div class="header-actions">
                     <button id="theme-toggle" class="icon-btn" title="تبديل الوضع">
                         <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="telegram-btn" class="icon-btn" title="ربط تلغرام">
+                        <i class="fab fa-telegram"></i>
                     </button>
                     <button id="settings-btn" class="icon-btn" title="الإعدادات">
                         <i class="fas fa-cog"></i>
@@ -90,6 +97,20 @@
                 </select>
             </div>
         </header>
+
+        <!-- إشعار التلغرام -->
+        <div id="telegram-notice" class="telegram-notice">
+            <div class="notice-content">
+                <i class="fab fa-telegram"></i>
+                <div>
+                    <h3>ربط تلغرام</h3>
+                    <p>أضف مصروفاتك عبر رسائل تلغرام! أرسل "صرفت 150 بطاطس" للبوت</p>
+                </div>
+                <button id="connect-telegram-btn" class="btn btn-primary">
+                    <i class="fas fa-link"></i> ربط الآن
+                </button>
+            </div>
+        </div>
 
         <!-- الإحصائيات -->
         <div class="stats-grid">
@@ -158,6 +179,41 @@
             </div>
         </div>
 
+        <!-- تعليمات التلغرام -->
+        <div class="telegram-guide">
+            <h3><i class="fab fa-telegram"></i> كيف تستخدم تلغرام لإضافة مصروفات؟</h3>
+            <div class="guide-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>أنشئ بوت تلغرام</h4>
+                        <p>تحدث مع <a href="https://t.me/BotFather" target="_blank">@BotFather</a> واختر /newbot</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>احصل على التوكن</h4>
+                        <p>انسخ التوكن الذي يعطيك إياه البوت</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>احصل على Chat ID</h4>
+                        <p>تحدث مع <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a> لمعرفتك</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>ابدأ بإرسال المصروفات</h4>
+                        <p>أرسل: "صرفت 150 بطاطس" أو "دفعت 500 فواتير"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- الفئات -->
         <div class="section">
             <div class="section-header">
@@ -200,6 +256,7 @@
                     <thead>
                         <tr>
                             <th>التاريخ</th>
+                            <th>المصدر</th>
                             <th>الفئة</th>
                             <th>المبلغ</th>
                             <th>الملاحظات</th>
@@ -247,9 +304,6 @@
                             <button type="button" class="category-btn" data-category="تسوق">
                                 <i class="fas fa-shopping-cart"></i> تسوق
                             </button>
-                            <button type="button" class="category-btn" data-category="ترفيه">
-                                <i class="fas fa-film"></i> ترفيه
-                            </button>
                         </div>
                         <div class="custom-category">
                             <input type="text" id="custom-category" placeholder="أو أدخل فئة جديدة">
@@ -286,6 +340,132 @@
         </div>
     </div>
 
+    <!-- نافذة ربط تلغرام -->
+    <div id="telegram-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fab fa-telegram"></i> ربط بوت تلغرام</h3>
+                <button class="close-btn" data-modal="telegram">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="telegram-config">
+                    <div class="config-step">
+                        <h4>الخطوة 1: أنشئ بوت تلغرام</h4>
+                        <p>تحدث مع <a href="https://t.me/BotFather" target="_blank" class="telegram-link">@BotFather</a> وأنشئ بوت جديد</p>
+                        <ol class="steps-list">
+                            <li>ابحث عن @BotFather في تلغرام</li>
+                            <li>أرسل <code>/newbot</code></li>
+                            <li>اختر اسم للبوت (مثال: MyExpenseBot)</li>
+                            <li>اختر اسم مستخدم للبوت (ينتهي بـ bot)</li>
+                            <li>احفظ التوكن الذي يعطيك إياه</li>
+                        </ol>
+                    </div>
+
+                    <div class="config-step">
+                        <h4>الخطوة 2: احصل على معرف المحادثة</h4>
+                        <p>تحدث مع <a href="https://t.me/userinfobot" target="_blank" class="telegram-link">@userinfobot</a></p>
+                        <ol class="steps-list">
+                            <li>ابحث عن @userinfobot في تلغرام</li>
+                            <li>أرسل <code>/start</code></li>
+                            <li>انسخ Your Chat ID</li>
+                        </ol>
+                    </div>
+
+                    <div class="config-step">
+                        <h4>الخطوة 3: أدخل بيانات البوت</h4>
+                        <div class="form-group">
+                            <label for="bot-token">
+                                <i class="fas fa-key"></i> توكن البوت
+                            </label>
+                            <input type="password" id="bot-token" placeholder="أدخل توكن البوت" dir="ltr">
+                            <small>مثال: 1234567890:ABCdefGHIjklMNOpqrsTUVwxyz</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="chat-id">
+                                <i class="fas fa-id-card"></i> معرف المحادثة (Chat ID)
+                            </label>
+                            <input type="text" id="chat-id" placeholder="أدخل معرف المحادثة" dir="ltr">
+                            <small>مثال: 123456789</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="test-message">
+                                <i class="fas fa-comment"></i> جرب إرسال رسالة
+                            </label>
+                            <div class="test-message-box">
+                                <input type="text" id="test-message" value="صرفت 150 بطاطس" dir="rtl">
+                                <button type="button" id="send-test-btn" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> أرسل
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="telegram-commands">
+                        <h4>أوامر البوت المتاحة:</h4>
+                        <div class="commands-list">
+                            <div class="command">
+                                <code>/start</code>
+                                <span>بدء استخدام البوت</span>
+                            </div>
+                            <div class="command">
+                                <code>/total</code>
+                                <span>عرض إجمالي المصروفات</span>
+                            </div>
+                            <div class="command">
+                                <code>/categories</code>
+                                <span>عرض جميع الفئات</span>
+                            </div>
+                            <div class="command">
+                                <code>/month</code>
+                                <span>مصروفات الشهر الحالي</span>
+                            </div>
+                            <div class="command">
+                                <code>/help</code>
+                                <span>عرض المساعدة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-examples">
+                        <h4>أمثلة لإضافة مصروفات:</h4>
+                        <div class="examples-grid">
+                            <div class="example">
+                                <code>صرفت 150 بطاطس</code>
+                                <span>إضافة مصروف للطعام</span>
+                            </div>
+                            <div class="example">
+                                <code>دفعت 500 فواتير</code>
+                                <span>دفع فواتير</span>
+                            </div>
+                            <div class="example">
+                                <code>اشتريت 250 خبز</code>
+                                <span>شراء خبز</span>
+                            </div>
+                            <div class="example">
+                                <code>مواصلات 300 دينار</code>
+                                <span>مصروف مواصلات</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-actions">
+                        <button id="test-connection-btn" class="btn btn-secondary">
+                            <i class="fas fa-wifi"></i> اختبار الاتصال
+                        </button>
+                        <button id="save-telegram-btn" class="btn btn-primary">
+                            <i class="fas fa-save"></i> حفظ الإعدادات
+                        </button>
+                        <button id="disconnect-telegram-btn" class="btn btn-danger">
+                            <i class="fas fa-unlink"></i> قطع الاتصال
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- نافذة الإعدادات -->
     <div id="settings-modal" class="modal hidden">
         <div class="modal-content">
@@ -296,6 +476,7 @@
             <div class="modal-body">
                 <div class="settings-tabs">
                     <button class="tab-btn active" data-tab="general">عام</button>
+                    <button class="tab-btn" data-tab="telegram">تلغرام</button>
                     <button class="tab-btn" data-tab="budget">الميزانية</button>
                     <button class="tab-btn" data-tab="categories">الفئات</button>
                     <button class="tab-btn" data-tab="backup">نسخ احتياطي</button>
@@ -315,17 +496,6 @@
 
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4><i class="fas fa-language"></i> اللغة</h4>
-                            <p>لغة واجهة التطبيق</p>
-                        </div>
-                        <select id="language-select" class="setting-select">
-                            <option value="ar" selected>العربية</option>
-                            <option value="en">English</option>
-                        </select>
-                    </div>
-
-                    <div class="setting-item">
-                        <div class="setting-info">
                             <h4><i class="fas fa-bell"></i> التنبيهات</h4>
                             <p>تفعيل تنبيهات الميزانية</p>
                         </div>
@@ -333,6 +503,54 @@
                             <input type="checkbox" id="notifications-toggle" checked>
                             <span class="slider"></span>
                         </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4><i class="fas fa-robot"></i> معالجة الرسائل التلقائية</h4>
+                            <p>معالجة رسائل تلغرام تلقائياً</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="auto-process-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="telegram-tab">
+                    <div class="telegram-status-settings">
+                        <div class="status-info">
+                            <h4><i class="fab fa-telegram"></i> حالة الاتصال</h4>
+                            <div id="connection-status" class="connection-status">
+                                <i class="fas fa-circle"></i>
+                                <span>غير متصل</span>
+                            </div>
+                        </div>
+                        
+                        <button id="open-telegram-settings" class="btn btn-primary">
+                            <i class="fas fa-cog"></i> فتح إعدادات تلغرام
+                        </button>
+                    </div>
+
+                    <div class="telegram-webhook">
+                        <h4><i class="fas fa-link"></i> Webhook إعدادات</h4>
+                        <p>للاستقبال التلقائي للرسائل، تحتاج إلى خادم (Server)</p>
+                        <div class="webhook-options">
+                            <div class="webhook-option">
+                                <h5>الخيار 1: استضافة مجانية</h5>
+                                <p>استخدم Render, Railway, أو Heroku</p>
+                                <a href="https://render.com" target="_blank" class="btn btn-small">
+                                    <i class="fas fa-external-link-alt"></i> Render
+                                </a>
+                            </div>
+                            <div class="webhook-option">
+                                <h5>الخيار 2: استضافة محلية</h5>
+                                <p>تشغيل server.js على جهازك</p>
+                                <button id="copy-server-code" class="btn btn-small">
+                                    <i class="fas fa-copy"></i> نسخ كود السيرفر
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -414,19 +632,65 @@
             <i class="fas fa-wallet"></i>
         </div>
         <h3>لا توجد مصروفات بعد</h3>
-        <p>ابدأ بإضافة أول مصروف لك لتتبع إنفاقك</p>
-        <button id="add-first-expense-btn" class="btn btn-primary">
-            <i class="fas fa-plus"></i> أضف مصروفك الأول
-        </button>
+        <p>ابدأ بإضافة أول مصروف لك أو ربط تلغرام لإضافة مصروفات صوتية</p>
+        <div class="empty-actions">
+            <button id="add-first-expense-btn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> أضف مصروف يدوياً
+            </button>
+            <button id="connect-first-telegram-btn" class="btn btn-telegram">
+                <i class="fab fa-telegram"></i> ربط تلغرام
+            </button>
+        </div>
     </div>
 
     <!-- الفوتر -->
     <footer class="footer">
         <div class="footer-content">
-            <p>نظام المصروفات الذكي &copy; <span id="current-year"></span></p>
-            <p>جميع البيانات مخزنة محلياً على جهازك</p>
+            <p>نظام المصروفات الذكي مع تلغرام &copy; <span id="current-year"></span></p>
+            <p>التطبيق يعمل بالكامل على المتصفح - البيانات محفوظة محلياً</p>
+            <div class="footer-links">
+                <a href="#" id="telegram-help-link"><i class="fab fa-telegram"></i> مساعدة تلغرام</a>
+                <a href="#" id="report-issue-link"><i class="fas fa-bug"></i> الإبلاغ عن مشكلة</a>
+            </div>
         </div>
     </footer>
+
+    <!-- نموذج تقرير المشكلة -->
+    <div id="issue-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-bug"></i> الإبلاغ عن مشكلة</h3>
+                <button class="close-btn" data-modal="issue">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="issue-form">
+                    <div class="form-group">
+                        <label for="issue-type">نوع المشكلة</label>
+                        <select id="issue-type" class="form-control">
+                            <option value="telegram">مشكلة في تلغرام</option>
+                            <option value="data">مشكلة في البيانات</option>
+                            <option value="ui">مشكلة في الواجهة</option>
+                            <option value="other">مشكلة أخرى</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="issue-description">وصف المشكلة</label>
+                        <textarea id="issue-description" rows="4" placeholder="صف المشكلة التي تواجهها..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" data-modal="issue">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> إرسال التقرير
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
