@@ -25,95 +25,188 @@ class ExpenseTracker {
     }
     
     loadData() {
-        const savedExpenses = localStorage.getItem('expenses');
-        const savedCategories = localStorage.getItem('categories');
-        const savedSettings = localStorage.getItem('settings');
-        
-        if (savedExpenses) this.expenses = JSON.parse(savedExpenses);
-        if (savedCategories) this.categories = JSON.parse(savedCategories);
-        if (savedSettings) this.settings = JSON.parse(savedSettings);
-        
-        if (this.settings.darkMode) {
-            document.body.classList.add('dark');
+        try {
+            const savedExpenses = localStorage.getItem('expenses');
+            const savedCategories = localStorage.getItem('categories');
+            const savedSettings = localStorage.getItem('settings');
+            
+            if (savedExpenses) {
+                this.expenses = JSON.parse(savedExpenses);
+            }
+            
+            if (savedCategories) {
+                this.categories = JSON.parse(savedCategories);
+            }
+            
+            if (savedSettings) {
+                const parsedSettings = JSON.parse(savedSettings);
+                this.settings = { ...this.settings, ...parsedSettings };
+            }
+            
+            // تطبيق الوضع الداكن
+            if (this.settings.darkMode) {
+                document.body.classList.add('dark');
+            }
+        } catch (error) {
+            console.error('خطأ في تحميل البيانات:', error);
         }
     }
     
     saveData() {
-        localStorage.setItem('expenses', JSON.stringify(this.expenses));
-        localStorage.setItem('categories', JSON.stringify(this.categories));
-        localStorage.setItem('settings', JSON.stringify(this.settings));
+        try {
+            localStorage.setItem('expenses', JSON.stringify(this.expenses));
+            localStorage.setItem('categories', JSON.stringify(this.categories));
+            localStorage.setItem('settings', JSON.stringify(this.settings));
+        } catch (error) {
+            console.error('خطأ في حفظ البيانات:', error);
+        }
     }
     
     setupEventListeners() {
-        // شاشة الترحيب
-        document.getElementById('start-btn').addEventListener('click', () => {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('app').classList.remove('hidden');
-        });
-        
-        // إضافة مصروف سريع
-        document.getElementById('quick-add-btn').addEventListener('click', () => {
-            this.addQuickExpense();
-        });
-        
-        // إضافة مصروف من الهيدر
-        document.getElementById('add-expense-btn-header').addEventListener('click', () => {
-            this.openExpenseModal();
-        });
-        
-        // ربط تلغرام
-        document.getElementById('telegram-btn').addEventListener('click', () => {
-            this.openTelegramModal();
-        });
-        
-        document.getElementById('connect-telegram-btn').addEventListener('click', () => {
-            this.openTelegramModal();
-        });
-        
-        // حفظ إعدادات تلغرام
-        document.getElementById('save-telegram-btn').addEventListener('click', () => {
-            this.saveTelegramSettings();
-        });
-        
-        // قطع اتصال تلغرام
-        document.getElementById('disconnect-telegram-btn').addEventListener('click', () => {
-            this.disconnectTelegram();
-        });
-        
-        // اختبار الاتصال
-        document.getElementById('test-connection-btn').addEventListener('click', () => {
-            this.testTelegramConnection();
-        });
-        
-        // إغلاق النوافذ
-        document.querySelectorAll('.close-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const modal = e.target.closest('[data-modal]').dataset.modal;
-                this.closeModal(modal);
+        // تأخير التنفيذ حتى يكون DOM جاهزاً
+        setTimeout(() => {
+            // شاشة الترحيب
+            const startBtn = document.getElementById('start-btn');
+            if (startBtn) {
+                startBtn.addEventListener('click', () => {
+                    document.getElementById('welcome-screen').style.display = 'none';
+                    document.getElementById('app').classList.remove('hidden');
+                });
+            }
+            
+            // إضافة مصروف سريع
+            const quickAddBtn = document.getElementById('quick-add-btn');
+            if (quickAddBtn) {
+                quickAddBtn.addEventListener('click', () => {
+                    this.addQuickExpense();
+                });
+            }
+            
+            // إضافة مصروف من الهيدر
+            const addExpenseBtn = document.getElementById('add-expense-btn-header');
+            if (addExpenseBtn) {
+                addExpenseBtn.addEventListener('click', () => {
+                    this.openExpenseModal();
+                });
+            }
+            
+            // ربط تلغرام
+            const telegramBtn = document.getElementById('telegram-btn');
+            if (telegramBtn) {
+                telegramBtn.addEventListener('click', () => {
+                    this.openTelegramModal();
+                });
+            }
+            
+            const connectTelegramBtn = document.getElementById('connect-telegram-btn');
+            if (connectTelegramBtn) {
+                connectTelegramBtn.addEventListener('click', () => {
+                    this.openTelegramModal();
+                });
+            }
+            
+            // حفظ إعدادات تلغرام
+            const saveTelegramBtn = document.getElementById('save-telegram-btn');
+            if (saveTelegramBtn) {
+                saveTelegramBtn.addEventListener('click', () => {
+                    this.saveTelegramSettings();
+                });
+            }
+            
+            // قطع اتصال تلغرام
+            const disconnectTelegramBtn = document.getElementById('disconnect-telegram-btn');
+            if (disconnectTelegramBtn) {
+                disconnectTelegramBtn.addEventListener('click', () => {
+                    this.disconnectTelegram();
+                });
+            }
+            
+            // اختبار الاتصال
+            const testConnectionBtn = document.getElementById('test-connection-btn');
+            if (testConnectionBtn) {
+                testConnectionBtn.addEventListener('click', () => {
+                    this.testTelegramConnection();
+                });
+            }
+            
+            // إغلاق النوافذ
+            document.querySelectorAll('.close-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modal = e.target.closest('[data-modal]');
+                    if (modal) {
+                        const modalName = modal.dataset.modal;
+                        this.closeModal(modalName);
+                    }
+                });
             });
-        });
-        
-        // الوضع الداكن
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            this.toggleDarkMode();
-        });
-        
-        // إضافة مصروف كامل
-        document.getElementById('expense-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.saveExpense();
-        });
-        
-        // تحديث السنة
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // الوضع الداكن
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    this.toggleDarkMode();
+                });
+            }
+            
+            // إضافة مصروف كامل
+            const expenseForm = document.getElementById('expense-form');
+            if (expenseForm) {
+                expenseForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveExpense();
+                });
+            }
+            
+            // تحديث السنة
+            const currentYear = document.getElementById('current-year');
+            if (currentYear) {
+                currentYear.textContent = new Date().getFullYear();
+            }
+            
+            // اختيار الفئات
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const category = e.target.dataset.category;
+                    document.getElementById('custom-category').value = category;
+                    
+                    // إضافة تأثير التحديد
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                });
+            });
+            
+            // اختبار اتصال عند الضغط على Enter في حقول تلغرام
+            const botTokenInput = document.getElementById('bot-token');
+            const chatIdInput = document.getElementById('chat-id');
+            
+            if (botTokenInput && chatIdInput) {
+                const handleEnterKey = (e) => {
+                    if (e.key === 'Enter') {
+                        this.testTelegramConnection();
+                    }
+                };
+                
+                botTokenInput.addEventListener('keypress', handleEnterKey);
+                chatIdInput.addEventListener('keypress', handleEnterKey);
+            }
+            
+        }, 100); // تأخير 100ms للتأكد من تحميل DOM
     }
     
     // ==================== إدارة المصروفات ====================
     
     addQuickExpense() {
-        const amount = parseFloat(document.getElementById('quick-amount').value);
-        const category = document.getElementById('quick-category').value;
-        const notes = document.getElementById('quick-notes').value;
+        const amountInput = document.getElementById('quick-amount');
+        const categorySelect = document.getElementById('quick-category');
+        const notesInput = document.getElementById('quick-notes');
+        
+        if (!amountInput || !categorySelect) return;
+        
+        const amount = parseFloat(amountInput.value);
+        const category = categorySelect.value;
+        const notes = notesInput ? notesInput.value : '';
         
         if (!amount || amount <= 0) {
             this.showNotification('الرجاء إدخال مبلغ صحيح', 'error');
@@ -139,24 +232,50 @@ class ExpenseTracker {
         this.render();
         this.updateStats();
         
-        document.getElementById('quick-amount').value = '';
-        document.getElementById('quick-category').value = '';
-        document.getElementById('quick-notes').value = '';
+        amountInput.value = '';
+        categorySelect.value = '';
+        if (notesInput) notesInput.value = '';
         
         this.showNotification('تم إضافة المصروف بنجاح', 'success');
     }
     
     openExpenseModal() {
-        document.getElementById('expense-modal').classList.remove('hidden');
-        document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        const modal = document.getElementById('expense-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+            
+            // إلغاء تحديد أي فئة
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
     }
     
     saveExpense() {
-        const amount = parseFloat(document.getElementById('amount').value);
-        const category = document.getElementById('custom-category').value.trim() || 
-                        document.querySelector('.category-btn.active')?.dataset.category;
-        const date = document.getElementById('date').value;
-        const notes = document.getElementById('notes').value;
+        const amountInput = document.getElementById('amount');
+        const categoryInput = document.getElementById('custom-category');
+        const dateInput = document.getElementById('date');
+        const notesInput = document.getElementById('notes');
+        
+        if (!amountInput || !dateInput) return;
+        
+        const amount = parseFloat(amountInput.value);
+        let category = categoryInput ? categoryInput.value.trim() : '';
+        
+        // إذا كان حقل الفئة فارغاً، تحقق من الأزرار المحددة
+        if (!category) {
+            const activeBtn = document.querySelector('.category-btn.active');
+            if (activeBtn) {
+                category = activeBtn.dataset.category;
+            }
+        }
+        
+        const date = dateInput.value;
+        const notes = notesInput ? notesInput.value : '';
         
         if (!amount || amount <= 0) {
             this.showNotification('الرجاء إدخال مبلغ صحيح', 'error');
@@ -198,6 +317,8 @@ class ExpenseTracker {
     
     renderRecentExpenses() {
         const container = document.getElementById('recent-expenses');
+        if (!container) return;
+        
         const recentExpenses = this.getRecentExpenses(5);
         
         if (recentExpenses.length === 0) {
@@ -243,6 +364,8 @@ class ExpenseTracker {
     
     renderCategoriesChart() {
         const container = document.getElementById('categories-chart');
+        if (!container) return;
+        
         const monthlyExpenses = this.getMonthlyExpenses();
         
         if (monthlyExpenses.length === 0) {
@@ -291,10 +414,15 @@ class ExpenseTracker {
         const categoriesCount = new Set(monthlyExpenses.map(exp => exp.category)).size;
         const dailyAverage = count > 0 ? total / 30 : 0;
         
-        document.getElementById('total-expenses').textContent = `${total.toFixed(2)} د.ج`;
-        document.getElementById('expenses-count').textContent = count;
-        document.getElementById('categories-count').textContent = categoriesCount;
-        document.getElementById('daily-average').textContent = `${dailyAverage.toFixed(2)} د.ج`;
+        const totalEl = document.getElementById('total-expenses');
+        const countEl = document.getElementById('expenses-count');
+        const categoriesEl = document.getElementById('categories-count');
+        const averageEl = document.getElementById('daily-average');
+        
+        if (totalEl) totalEl.textContent = `${total.toFixed(2)} د.ج`;
+        if (countEl) countEl.textContent = count;
+        if (categoriesEl) categoriesEl.textContent = categoriesCount;
+        if (averageEl) averageEl.textContent = `${dailyAverage.toFixed(2)} د.ج`;
     }
     
     getMonthlyExpenses() {
@@ -342,41 +470,69 @@ class ExpenseTracker {
         const connectionStatus = document.getElementById('connection-status');
         const notice = document.getElementById('telegram-notice');
         
-        if (connected) {
-            statusElement.innerHTML = '<i class="fab fa-telegram"></i><span>متصل</span>';
-            statusElement.className = 'telegram-status connected';
-            
-            connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>متصل</span>';
-            connectionStatus.className = 'connection-status connected';
-            
-            if (notice) notice.style.display = 'none';
-            
-            // تعبئة الحقول
-            document.getElementById('bot-token').value = this.settings.telegram.botToken;
-            document.getElementById('chat-id').value = this.settings.telegram.chatId;
-        } else {
-            statusElement.innerHTML = '<i class="fab fa-telegram"></i><span>غير متصل</span>';
-            statusElement.className = 'telegram-status disconnected';
-            
-            connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>غير متصل</span>';
-            connectionStatus.className = 'connection-status disconnected';
-            
-            if (notice) notice.style.display = 'block';
+        if (statusElement) {
+            if (connected) {
+                statusElement.innerHTML = '<i class="fab fa-telegram"></i><span>متصل</span>';
+                statusElement.className = 'telegram-status connected';
+            } else {
+                statusElement.innerHTML = '<i class="fab fa-telegram"></i><span>غير متصل</span>';
+                statusElement.className = 'telegram-status disconnected';
+            }
+        }
+        
+        if (connectionStatus) {
+            if (connected) {
+                connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>متصل</span>';
+                connectionStatus.className = 'connection-status connected';
+            } else {
+                connectionStatus.innerHTML = '<i class="fas fa-circle"></i><span>غير متصل</span>';
+                connectionStatus.className = 'connection-status disconnected';
+            }
+        }
+        
+        if (notice) {
+            notice.style.display = connected ? 'none' : 'block';
+        }
+        
+        // تعبئة الحقول في النافذة
+        const botTokenInput = document.getElementById('bot-token');
+        const chatIdInput = document.getElementById('chat-id');
+        
+        if (botTokenInput && chatIdInput && connected) {
+            botTokenInput.value = this.settings.telegram.botToken;
+            chatIdInput.value = this.settings.telegram.chatId;
         }
     }
     
     openTelegramModal() {
-        document.getElementById('telegram-modal').classList.remove('hidden');
-        
-        // تعبئة البيانات المحفوظة
-        document.getElementById('bot-token').value = this.settings.telegram.botToken || '';
-        document.getElementById('chat-id').value = this.settings.telegram.chatId || '';
+        const modal = document.getElementById('telegram-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            
+            // تعبئة البيانات المحفوظة
+            const botTokenInput = document.getElementById('bot-token');
+            const chatIdInput = document.getElementById('chat-id');
+            
+            if (botTokenInput) {
+                botTokenInput.value = this.settings.telegram.botToken || '';
+            }
+            
+            if (chatIdInput) {
+                chatIdInput.value = this.settings.telegram.chatId || '';
+            }
+        }
     }
     
     async testTelegramConnection() {
-        const botToken = document.getElementById('bot-token').value.trim();
-        const chatId = document.getElementById('chat-id').value.trim();
-        const testMessage = document.getElementById('test-message').value.trim();
+        const botTokenInput = document.getElementById('bot-token');
+        const chatIdInput = document.getElementById('chat-id');
+        const testMessageInput = document.getElementById('test-message');
+        
+        if (!botTokenInput || !chatIdInput) return;
+        
+        const botToken = botTokenInput.value.trim();
+        const chatId = chatIdInput.value.trim();
+        const testMessage = testMessageInput ? testMessageInput.value.trim() : 'صرفت 150 بطاطس';
         
         if (!botToken || !chatId) {
             this.showNotification('الرجاء إدخال التوكن ومعرف المحادثة', 'error');
@@ -392,7 +548,7 @@ class ExpenseTracker {
             );
             
             if (!testResponse.ok) {
-                throw new Error('التوكن غير صالح');
+                throw new Error('التوكن غير صالح أو انتهت صلاحيته');
             }
             
             // إرسال رسالة اختبار
@@ -403,7 +559,7 @@ class ExpenseTracker {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: chatId,
-                        text: '✅ تم الاتصال بنجاح! يمكنك الآن إرسال المصروفات مثل: "صرفت 150 بطاطس"'
+                        text: '✅ تم الاتصال بنجاح!\n\nيمكنك الآن إرسال المصروفات مثل:\n• صرفت 150 بطاطس\n• دفعت 500 فواتير\n• مواصلات 300 دينار'
                     })
                 }
             );
@@ -413,7 +569,7 @@ class ExpenseTracker {
             if (result.ok) {
                 this.showNotification('تم الاتصال بتلغرام بنجاح!', 'success');
                 
-                // حفظ الإعدادات مؤقتاً
+                // حفظ الإعدادات مؤقتاً للعرض
                 this.settings.telegram.botToken = botToken;
                 this.settings.telegram.chatId = chatId;
                 this.settings.telegram.connected = true;
@@ -424,15 +580,28 @@ class ExpenseTracker {
             }
         } catch (error) {
             console.error('خطأ في اختبار الاتصال:', error);
-            this.showNotification(`فشل الاتصال: ${error.message}`, 'error');
+            let errorMessage = error.message;
+            
+            if (errorMessage.includes('Forbidden')) {
+                errorMessage = 'البوت غير قادر على إرسال رسائل لهذا المستخدم. تأكد من أنك أرسلت /start للبوت أولاً.';
+            } else if (errorMessage.includes('chat not found')) {
+                errorMessage = 'المحادثة غير موجودة. تأكد من صحة Chat ID وأنك بدأت محادثة مع البوت.';
+            }
+            
+            this.showNotification(`فشل الاتصال: ${errorMessage}`, 'error');
         } finally {
             this.showLoading(false);
         }
     }
     
     saveTelegramSettings() {
-        const botToken = document.getElementById('bot-token').value.trim();
-        const chatId = document.getElementById('chat-id').value.trim();
+        const botTokenInput = document.getElementById('bot-token');
+        const chatIdInput = document.getElementById('chat-id');
+        
+        if (!botTokenInput || !chatIdInput) return;
+        
+        const botToken = botTokenInput.value.trim();
+        const chatId = chatIdInput.value.trim();
         
         if (!botToken || !chatId) {
             this.showNotification('الرجاء إدخال التوكن ومعرف المحادثة', 'error');
@@ -451,26 +620,35 @@ class ExpenseTracker {
     }
     
     disconnectTelegram() {
-        this.settings.telegram = {
-            botToken: '',
-            chatId: '',
-            connected: false
-        };
-        
-        this.saveData();
-        this.updateTelegramStatus(false);
-        
-        this.showNotification('تم قطع الاتصال بتلغرام', 'info');
+        if (confirm('هل أنت متأكد من قطع الاتصال بتلغرام؟')) {
+            this.settings.telegram = {
+                botToken: '',
+                chatId: '',
+                connected: false
+            };
+            
+            this.saveData();
+            this.updateTelegramStatus(false);
+            
+            this.showNotification('تم قطع الاتصال بتلغرام', 'info');
+        }
     }
     
     // ==================== خدمات مساعدة ====================
     
     closeModal(modalName) {
+        let modal;
+        
         if (modalName === 'expense') {
-            document.getElementById('expense-modal').classList.add('hidden');
-            document.getElementById('expense-form').reset();
+            modal = document.getElementById('expense-modal');
+            const form = document.getElementById('expense-form');
+            if (form) form.reset();
         } else if (modalName === 'telegram') {
-            document.getElementById('telegram-modal').classList.add('hidden');
+            modal = document.getElementById('telegram-modal');
+        }
+        
+        if (modal) {
+            modal.classList.add('hidden');
         }
     }
     
@@ -484,6 +662,8 @@ class ExpenseTracker {
         const notification = document.getElementById('notification');
         const icon = document.getElementById('notification-icon');
         const messageEl = document.getElementById('notification-message');
+        
+        if (!notification || !icon || !messageEl) return;
         
         let iconClass = '';
         switch (type) {
@@ -510,15 +690,17 @@ class ExpenseTracker {
     
     showLoading(show) {
         const loading = document.getElementById('loading');
-        if (show) {
-            loading.classList.remove('hidden');
-        } else {
-            loading.classList.add('hidden');
+        if (loading) {
+            if (show) {
+                loading.classList.remove('hidden');
+            } else {
+                loading.classList.add('hidden');
+            }
         }
     }
 }
 
-// بدء التطبيق
-document.addEventListener('DOMContentLoaded', () => {
+// بدء التطبيق بعد تحميل الصفحة بالكامل
+window.addEventListener('DOMContentLoaded', () => {
     window.expenseTracker = new ExpenseTracker();
 });
